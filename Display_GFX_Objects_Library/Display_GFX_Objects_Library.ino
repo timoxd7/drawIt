@@ -1,12 +1,17 @@
-#include <TFT_FastPin.h>
-#include <TFT_ILI9341.h>
-#include <User_Setup.h>
+#include "SPI.h"
+#include "TFT_ILI9341.h"
 
-#include "DisplayGFXObjects.h"
+#include "drawIt.h"
 
+/*
+   Using Hardware SPI!
+   Just create the Display object like following. Then you can place any object you want on this screen
+*/
+
+TFT_ILI9341 display = TFT_ILI9341();
 
 void setup() {
-  
+  drawIt::slider slider(display, 0, 0, 0, 0, 0.0, true);
 }
 
 void loop() {
