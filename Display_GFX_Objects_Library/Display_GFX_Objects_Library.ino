@@ -11,7 +11,7 @@
 TFT_ILI9341 display = TFT_ILI9341();
 
 void setup() {
-  drawIt::slider slider(display, 0, 0, 0, 0, 0.0, true);
+  drawIt::slider slider(display);
 }
 
 void loop() {

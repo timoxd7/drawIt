@@ -3,12 +3,13 @@
 #include "TFT_ILI9341.h"
 #include "drawIt.h"
 
-drawIt::slider::slider(TFT_ILI9341 display, int x_origin, int y_origin, int x_length, int y_length, float value, bool touch){
+drawIt::slider::slider(TFT_ILI9341 display){
   _display = display;
-  this->changeOrigin(x_origin, y_origin);
-  this->changeLength(x_length, y_length);
-  this->setValue(value);
-  this->setTouch(touch);
+  this->changeOrigin(0, 0);
+  this->changeLength(0, 0);
+  this->setValue(0.0);
+  this->setTouch(true);
+  this->setVisibility(true);
 
   return;
 }
@@ -19,7 +20,12 @@ void drawIt::slider::changeOrigin(int x_origin, int y_origin){
 }
 
 void drawIt::slider::changeLength(int x_length, int y_length){
-  int _x_length = x_length, _y_length = y_length;
+  if(x_length >= 4 && y_length >= 4){
+    _x_length = x_length, _y_length = y_length;
+  } else {
+    _x_length = 4, _y_length = 4;
+  }
+  
   return;
 }
 
@@ -45,8 +51,7 @@ float drawIt::slider::getValue(){
 }
 
 float drawIt::slider::value() {
-  this->getValue();
-  return;
+  return this->getValue();
 }
 
 void drawIt::slider::setTouch(bool activated){
@@ -64,7 +69,35 @@ bool drawIt::slider::getTouch(){
 }
 
 bool drawIt::slider::touch(){
-  this->getTouch();
+  return this->getTouch();
+}
+
+void drawIt::slider::touched(int x, int y){
+  
+}
+
+void drawIt::slider::setVisibility(bool visible){
+  _visible = visible;
   return;
 }
+
+void drawIt::slider::visible(bool visible){
+  this->setVisibility(visible);
+  return;
+}
+
+bool drawIt::slider::getVisibility(){
+  return _visible;
+}
+
+bool drawIt::slider::visible(){
+  return this->getVisibility();
+}
+
+void drawIt::slider::draw(){
+  
+}
+
+//-----------------------------------------------------------------------------------------------
+
 
