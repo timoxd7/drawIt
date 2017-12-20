@@ -1,21 +1,21 @@
 /*
- * This is a simple library with basic display elements.
- * 
- * Please specify your Display Object type below, decomment the one you using
- */
+   This is a simple library with basic display elements.
+
+   Please specify your Display Object type below, decomment the one you using
+*/
 
 //#define _displayObjectType TFT_ILI9341      //for the ILI9341 optimised libary ONLY FOR AVR PROCESSORS (by Bodmer)
 #define _displayObjectType ILI9341_t3         //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
 //#define _displayObjectType Adafruit_ILI9341 //for the original Adafruit_ILI9341 library
 
 //#define _displayObjectType   //Or just put in our own (include it in the drawIt.h and drawIt.cpp!!!)
-                               //you can basically use every library using the commands from Adafruit GFX
+//you can basically use every library using the commands from Adafruit GFX
 
 /*
- * You will find the type of your display in the discription of your display library
- * 
- * Now following include your display specific library
- */
+   You will find the type of your display in the discription of your display library
+
+   Now following include your display specific library
+*/
 
 //#include "TFT_ILI9341.h" //for the ILI9341 optimised libary ONLY FOR AVR PROCESSORS (by Bodmer)
 #include "ILI9341_t3.h"    //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
@@ -24,10 +24,10 @@
 //#include "Adafruit_ILI9341.h" //These both for the original Adafruit GFX library with ILI9341 display
 
 /*
- * Now also include this .h file in the drawIt.cpp file of this library.
- * 
- * Now if you have done all, start write your own code!
- */
+   Now also include this .h file in the drawIt.cpp file of this library.
+
+   Now if you have done all, start write your own code!
+*/
 
 //---------------------------------------------------------------------------------------------------------
 
@@ -56,58 +56,65 @@ const uint16_t  _background    = WHITE,
 class drawIt
 {
   public:
-  
-  class slider{
-    public:
-      slider(_displayObjectType& _dsp);
 
-      void changeOrigin(uint16_t x_origin, uint16_t y_origin); //
-      void changeLength(uint16_t x_length, uint16_t y_length); //
+    class slider {
+      public:
+        slider(_displayObjectType& _dsp);
 
-      void setValue(float value); //
-      void value(float value); //
+        void changeOrigin(uint16_t x_origin, uint16_t y_origin); //
+        void changeLength(uint16_t x_length, uint16_t y_length); //
 
-      float getValue(); //
-      float value(); //
+        void setValue(float value); //
+        void value(float value); //
 
-      void setTouch(bool activated); //
-      void touch(bool activated); //
+        float getValue(); //
+        float value(); //
 
-      bool getTouch(); //
-      bool touch(); //
+        void setTouch(bool activated); //
+        void touch(bool activated); //
 
-      void touched(uint16_t x, uint16_t y);
+        bool getTouch(); //
+        bool touch(); //
 
-      void setVisibility(bool visible); //
-      void visible(bool visible); //
-      
-      bool getVisibility(); //
-      bool visible(); //
+        void touched(uint16_t x, uint16_t y);
 
-      void autoDraw(bool active);
-      bool autoDraw();
-      
-      void draw();
-      
-    private:
-      _displayObjectType& _display;
-      uint16_t _x_origin, _y_origin;
-      uint16_t _x_length, _y_length;
-      float _value;
-      bool _touch, _visible, _autoDraw;
+        void setVisibility(bool visible); //
+        void visible(bool visible); //
 
-      struct _color{
-        uint16_t background = _background, outline = _outline, slider = _slider, slideroutline = _slideroutline;
-      } _color;
-  };
+        bool getVisibility(); //
+        bool visible(); //
+
+        void autoDraw(bool active);
+        bool autoDraw();
+
+        void draw();
+
+      private:
+        _displayObjectType& _display;
+
+        struct _origin {
+          uint16_t x, y;
+        } _origin;
+
+        struct _length {
+          uint16_t x, y;
+        } _length;
+
+        float _value;
+        bool _touch, _visible, _autoDraw;
+
+        struct _color {
+          uint16_t background = _background, outline = _outline, slider = _slider, slideroutline = _slideroutline;
+        } _color;
+    };
 
 
-  class button{
-    public:
+    class button {
+      public:
 
-    private:
-    
-  };
+      private:
+
+    };
 };
 
 #endif

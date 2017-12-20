@@ -13,12 +13,11 @@
 #define WHITE    0xFFFF
 #define GREY     0x5AEB
 
-#define TFT_DC  9
-#define TFT_CS 10
+#define TFT_DC 16
+#define TFT_CS 17
 
 /*
-   Using Hardware SPI!
-   Just create the Display object like following. Then you can place any object you want on this screen
+   Using Hardware SPI
 */
 
 ILI9341_t3 display(TFT_CS, TFT_DC);
@@ -27,10 +26,10 @@ void setup() {
   display.begin();
   display.setRotation(0);
   display.fillScreen(WHITE);
-  
+
   drawIt::slider slider(display);
 }
 
 void loop() {
-  
+
 }
