@@ -5,8 +5,8 @@
 */
 
 //#define _displayObjectType TFT_ILI9341      //for the ILI9341 optimised libary ONLY FOR AVR PROCESSORS (by Bodmer)
-#define _displayObjectType ILI9341_t3         //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
-//#define _displayObjectType Adafruit_ILI9341 //for the original Adafruit_ILI9341 library
+//#define _displayObjectType ILI9341_t3         //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
+#define _displayObjectType Adafruit_ILI9341 //for the original Adafruit_ILI9341 library
 
 //#define _displayObjectType   //Or just put in our own (include it in the drawIt.h and drawIt.cpp!!!)
 //you can basically use every library using the commands from Adafruit GFX
@@ -18,10 +18,10 @@
 */
 
 //#include "TFT_ILI9341.h" //for the ILI9341 optimised libary ONLY FOR AVR PROCESSORS (by Bodmer)
-#include "ILI9341_t3.h"    //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
+//#include "ILI9341_t3.h"    //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
 
-//#include "Adafruit_GFX.h"
-//#include "Adafruit_ILI9341.h" //These both for the original Adafruit GFX library with ILI9341 display
+#include "Adafruit_GFX.h"
+#include "Adafruit_ILI9341.h" //These both for the original Adafruit GFX library with ILI9341 display
 
 /*
    Now also include this .h file in the drawIt.cpp file of this library.
@@ -37,20 +37,20 @@
 #include "Arduino.h"
 #include "SPI.h"
 
-#define BLACK    0x0000
-#define BLUE     0x001F
-#define RED      0xF800
-#define GREEN    0x07E0
-#define CYAN     0x07FF
-#define MAGENTA  0xF81F
-#define YELLOW   0xFFE0
-#define WHITE    0xFFFF
-#define GREY     0x5AEB
+#define DRAWIT_BLACK    0x0000
+#define DRAWIT_BLUE     0x001F
+#define DRAWIT_RED      0xF800
+#define DRAWIT_GREEN    0x07E0
+#define DRAWIT_CYAN     0x07FF
+#define DRAWIT_MAGENTA  0xF81F
+#define DRAWIT_YELLOW   0xFFE0
+#define DRAWIT_WHITE    0xFFFF
+#define DRAWIT_GREY     0x5AEB
 
-const uint16_t  _background    = WHITE,
-                _outline       = BLACK,
-                _slider        = WHITE,
-                _slideroutline = BLACK;
+const uint16_t  _background    = DRAWIT_WHITE,
+                _outline       = DRAWIT_BLACK,
+                _slider        = DRAWIT_WHITE,
+                _slideroutline = DRAWIT_BLACK;
 
 
 class drawIt
@@ -104,7 +104,7 @@ class drawIt
         bool _touch, _visible, _autoDraw;
 
         struct _color {
-          uint16_t background = _background, outline = _outline, slider = _slider, slideroutline = _slideroutline;
+          const uint16_t background = _background, outline = _outline, slider = _slider, slideroutline = _slideroutline;
         } _color;
     };
 

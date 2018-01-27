@@ -4,10 +4,10 @@
 */
 
 //#include "TFT_ILI9341.h" //for the ILI9341 optimised libary ONLY FOR AVR PROCESSORS (by Bodmer)
-#include "ILI9341_t3.h"    //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
+//#include "ILI9341_t3.h"    //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
 
-//#include "Adafruit_GFX.h"
-//#include "Adafruit_ILI9341.h" //These both for the original Adafruit GFX library with ILI9341 display
+#include "Adafruit_GFX.h"
+#include "Adafruit_ILI9341.h" //These both for the original Adafruit GFX library with ILI9341 display
 
 /*
    Now just have a look at the instructions in the drawIt.h file.
@@ -159,14 +159,14 @@ void drawIt::slider::draw() {
 
     //Slider
     if (_length.x > _length.y) {
-      uint16_t _slide_length = _length.x - (_length.y - 2);
+      uint16_t _slide_length = (_length.x - 2) - (_length.y - 2);
       uint16_t _x_sliderposition = (_origin.x + 1) + (_slide_length * _value);
       uint16_t _sliderbox_size = _length.y - 2;
 
       _display.fillRect(_x_sliderposition, _origin.y + 1, _sliderbox_size, _sliderbox_size, _color.slider);
       _display.drawRect(_x_sliderposition, _origin.y + 1, _sliderbox_size, _sliderbox_size, _color.slideroutline);
     } else if (_length.x < _length.y) {
-      uint16_t _slide_length = _length.y - (_length.x - 2);
+      uint16_t _slide_length = (_length.y - 2) - (_length.x - 2);
       uint16_t _y_sliderposition = (_origin.y + 1) + (_slide_length * (1 - _value));
       uint16_t _sliderbox_size = _length.x - 2;
 
