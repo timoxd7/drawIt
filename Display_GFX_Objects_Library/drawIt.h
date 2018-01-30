@@ -5,8 +5,8 @@
 */
 
 //#define _displayObjectType TFT_ILI9341      //for the ILI9341 optimised libary ONLY FOR AVR PROCESSORS (by Bodmer)
-//#define _displayObjectType ILI9341_t3         //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
-#define _displayObjectType Adafruit_ILI9341 //for the original Adafruit_ILI9341 library
+#define _displayObjectType ILI9341_t3         //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
+//#define _displayObjectType Adafruit_ILI9341 //for the original Adafruit_ILI9341 library
 
 //#define _displayObjectType   //Or just put in our own (include it in the drawIt.h and drawIt.cpp!!!)
 //you can basically use every library using the commands from Adafruit GFX
@@ -18,10 +18,10 @@
 */
 
 //#include "TFT_ILI9341.h" //for the ILI9341 optimised libary ONLY FOR AVR PROCESSORS (by Bodmer)
-//#include "ILI9341_t3.h"    //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
+#include "ILI9341_t3.h"    //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
 
-#include "Adafruit_GFX.h"
-#include "Adafruit_ILI9341.h" //These both for the original Adafruit GFX library with ILI9341 display
+//#include "Adafruit_GFX.h"
+//#include "Adafruit_ILI9341.h" //These both for the original Adafruit GFX library with ILI9341 display
 
 /*
    Now also include this .h file in the drawIt.cpp file of this library.
@@ -59,7 +59,7 @@ class drawIt
 
     class slider {
       public:
-        slider(_displayObjectType& _dsp);
+        slider(_displayObjectType& _display, uint16_t x_origin = 0, uint16_t y_origin = 0, uint16_t x_length = 0, uint16_t y_length = 0, bool autoDrawActivated = false, float value = 0.0, bool touchActivated = true); //
 
         void changeOrigin(uint16_t x_origin, uint16_t y_origin); //
         void changeLength(uint16_t x_length, uint16_t y_length); //

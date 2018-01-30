@@ -4,10 +4,10 @@
 */
 
 //#include "TFT_ILI9341.h" //for the ILI9341 optimised libary ONLY FOR AVR PROCESSORS (by Bodmer)
-//#include "ILI9341_t3.h"    //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
+#include "ILI9341_t3.h"    //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
 
-#include "Adafruit_GFX.h"
-#include "Adafruit_ILI9341.h" //These both for the original Adafruit GFX library with ILI9341 display
+//#include "Adafruit_GFX.h"
+//#include "Adafruit_ILI9341.h" //These both for the original Adafruit GFX library with ILI9341 display
 
 /*
    Now just have a look at the instructions in the drawIt.h file.
@@ -22,13 +22,14 @@
 #include "drawIt.h"
 
 
-drawIt::slider::slider(_displayObjectType& _dsp): _display(_dsp) {
-  this->autoDraw(false);
-  this->changeOrigin(0, 0);
-  this->changeLength(0, 0);
-  this->setValue(0.0);
-  this->setTouch(true);
-  this->setVisibility(true);
+drawIt::slider::slider(_displayObjectType& _dsp, uint16_t x_origin, uint16_t y_origin, uint16_t x_length, uint16_t y_length, bool autoDrawActivated, float value, bool touchActivated)
+  : _display(_dsp) {
+  this->autoDraw(autoDrawActivated);
+  this->changeOrigin(x_origin, y_origin);
+  this->changeLength(x_length, y_length);
+  this->setValue(value);
+  this->setTouch(touchActivated);
+  this->setVisibility(autoDrawActivated);
 
   return;
 }
