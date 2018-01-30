@@ -15,3 +15,9 @@ getVisibility	KEYWORD2
 visible	KEYWORD2
 autoDraw	KEYWORD2
 draw	KEYWORD2
+setBackgroundColor	KEYWORD2
+backgroundColor	KEYWORD2
+getBackgroundColor	KEYWORD2
+setSliderBackgroundColor	KEYWORD2
+sliderBackgroundColor	KEYWORD2
+getSliderBackgroundColor	KEYWORD2
