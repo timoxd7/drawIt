@@ -71,6 +71,29 @@ bool drawIt::touch::getTouch() {
 
 //-----------------------------------------------------------------------------------------------------
 
+//Color
+
+//-----------------------------------------------------------------------------------------------------
+
+void drawIt::color::setBackgroundColor(uint16_t backgroundColor) {
+  _color.background = backgroundColor;
+}
+
+void drawIt::color::backgroundColor(uint16_t backgroundColor) {
+  this->setBackgroundColor(backgroundColor);
+}
+
+uint16_t drawIt::color::getBackgroundColor() {
+  return _color.background;
+}
+
+uint16_t drawIt::color::backgroundColor() {
+  return this->getBackgroundColor();
+}
+
+
+//-----------------------------------------------------------------------------------------------------
+
 //Basic Slider
 
 //-----------------------------------------------------------------------------------------------------
@@ -111,6 +134,22 @@ float drawIt::slider::getValue() {
 
 float drawIt::slider::value() {
   return this->getValue();
+}
+
+void drawIt::slider::setSliderBackgroundColor(uint16_t sliderBackgroundColor) {
+  _sliderColor.background = sliderBackgroundColor;
+}
+
+void drawIt::slider::sliderBackgroundColor(uint16_t sliderBackgroundColor) {
+  this->setSliderBackgroundColor(sliderBackgroundColor);
+}
+
+uint16_t drawIt::slider::getSliderBackgroundColor(){
+  return _sliderColor.background;
+}
+
+uint16_t drawIt::slider::sliderBackgroundColor(){
+  return this->getSliderBackgroundColor();
 }
 
 void drawIt::slider::touched(uint16_t x, uint16_t y) {
@@ -154,18 +193,18 @@ void drawIt::slider::draw() {
       uint16_t _x_sliderposition = (_origin.x + 1) + (_slide_length * _value);
       uint16_t _sliderbox_size = _length.y - 2;
 
-      _display.fillRect(_x_sliderposition, _origin.y + 1, _sliderbox_size, _sliderbox_size, _color.slider);
-      _display.drawRect(_x_sliderposition, _origin.y + 1, _sliderbox_size, _sliderbox_size, _color.slideroutline);
+      _display.fillRect(_x_sliderposition, _origin.y + 1, _sliderbox_size, _sliderbox_size, _sliderColor.background);
+      _display.drawRect(_x_sliderposition, _origin.y + 1, _sliderbox_size, _sliderbox_size, _sliderColor.outline);
     } else if (_length.x < _length.y) {
       uint16_t _slide_length = (_length.y - 2) - (_length.x - 2);
       uint16_t _y_sliderposition = (_origin.y + 1) + (_slide_length * (1 - _value));
       uint16_t _sliderbox_size = _length.x - 2;
 
-      _display.fillRect(_origin.x + 1, _y_sliderposition, _sliderbox_size, _sliderbox_size, _color.slider);
-      _display.drawRect(_origin.x + 1, _y_sliderposition, _sliderbox_size, _sliderbox_size, _color.slideroutline);
+      _display.fillRect(_origin.x + 1, _y_sliderposition, _sliderbox_size, _sliderbox_size, _sliderColor.background);
+      _display.drawRect(_origin.x + 1, _y_sliderposition, _sliderbox_size, _sliderbox_size, _sliderColor.outline);
     } else {
-      _display.fillRect(_origin.x + 1, _origin.y + 1, _length.x - 2, _length.y - 2, _color.slider);
-      _display.drawRect(_origin.x + 1, _origin.y + 1, _length.x - 2, _length.y - 2, _color.slideroutline);
+      _display.fillRect(_origin.x + 1, _origin.y + 1, _length.x - 2, _length.y - 2, _sliderColor.background);
+      _display.drawRect(_origin.x + 1, _origin.y + 1, _length.x - 2, _length.y - 2, _sliderColor.outline);
     }
   }
 }
