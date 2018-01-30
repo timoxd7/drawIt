@@ -1,26 +1,79 @@
-/*
-   Here you have to include the .h file of your display library.
-   Or just decomment one if it's the right one you already need.
-*/
+#include "drawIt.h"
 
-//#include "TFT_ILI9341.h" //for the ILI9341 optimised libary ONLY FOR AVR PROCESSORS (by Bodmer)
-#include "ILI9341_t3.h"    //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
-
-//#include "Adafruit_GFX.h"
-//#include "Adafruit_ILI9341.h" //These both for the original Adafruit GFX library with ILI9341 display
-
-/*
-   Now just have a look at the instructions in the drawIt.h file.
-   Then you can start coding in the .ino file of your project!
-*/
 
 //-----------------------------------------------------------------------------------------------------
 
+//Visuals
 
-#include "Arduino.h"
-#include "SPI.h"
-#include "drawIt.h"
+//-----------------------------------------------------------------------------------------------------
 
+void drawIt::visuals::changeOrigin(uint16_t x_origin, uint16_t y_origin) {
+  _origin.x = x_origin, _origin.y = y_origin;
+
+  if (_autoDraw) this->draw();
+  return;
+}
+
+void drawIt::visuals::changeLength(uint16_t x_length, uint16_t y_length) {
+  if (x_length >= 4 && y_length >= 4) {
+    _length.x = x_length, _length.y = y_length;
+  } else {
+    _length.x = 4, _length.y = 4;
+  }
+
+  if (_autoDraw) this->draw();
+  return;
+}
+
+void drawIt::visuals::setVisibility(bool visible) {
+  _visible = visible;
+
+  if (_autoDraw) this->draw();
+  return;
+}
+
+void drawIt::visuals::visible(bool visible) {
+  this->setVisibility(visible);
+  return;
+}
+
+bool drawIt::visuals::getVisibility() {
+  return _visible;
+}
+
+bool drawIt::visuals::visible() {
+  return this->getVisibility();
+}
+
+void drawIt::visuals::autoDraw(bool active) {
+  _autoDraw = active;
+
+  if (_autoDraw) this->draw();
+  return;
+}
+
+
+//-----------------------------------------------------------------------------------------------------
+
+//Touch
+
+//-----------------------------------------------------------------------------------------------------
+
+void drawIt::touch::setTouch(bool activated) {
+  _touch = activated;
+  return;
+}
+
+bool drawIt::touch::getTouch() {
+  return _touch;
+}
+
+
+//-----------------------------------------------------------------------------------------------------
+
+//Basic Slider
+
+//-----------------------------------------------------------------------------------------------------
 
 drawIt::slider::slider(_displayObjectType& _dsp, uint16_t x_origin, uint16_t y_origin, uint16_t x_length, uint16_t y_length, bool autoDrawActivated, float value, bool touchActivated)
   : _display(_dsp) {
@@ -31,24 +84,6 @@ drawIt::slider::slider(_displayObjectType& _dsp, uint16_t x_origin, uint16_t y_o
   this->setTouch(touchActivated);
   this->setVisibility(autoDrawActivated);
 
-  return;
-}
-
-void drawIt::slider::changeOrigin(uint16_t x_origin, uint16_t y_origin) {
-  _origin.x = x_origin, _origin.y = y_origin;
-
-  if (_autoDraw) this->draw();
-  return;
-}
-
-void drawIt::slider::changeLength(uint16_t x_length, uint16_t y_length) {
-  if (x_length >= 4 && y_length >= 4) {
-    _length.x = x_length, _length.y = y_length;
-  } else {
-    _length.x = 4, _length.y = 4;
-  }
-
-  if (_autoDraw) this->draw();
   return;
 }
 
@@ -78,24 +113,6 @@ float drawIt::slider::value() {
   return this->getValue();
 }
 
-void drawIt::slider::setTouch(bool activated) {
-  _touch = activated;
-  return;
-}
-
-void drawIt::slider::touch(bool activated) {
-  this->setTouch(activated);
-  return;
-}
-
-bool drawIt::slider::getTouch() {
-  return _touch;
-}
-
-bool drawIt::slider::touch() {
-  return this->getTouch();
-}
-
 void drawIt::slider::touched(uint16_t x, uint16_t y) {
   //Touch on the slider?
   if ((x > _origin.x + 1) && (y > _origin.y + 1) && (x < (_origin.x + _length.x - 2)) && (y < (_origin.y + _length.y - 2))) { // clear...
@@ -122,33 +139,6 @@ void drawIt::slider::touched(uint16_t x, uint16_t y) {
     if (_autoDraw) this->draw();
   }
 
-  return;
-}
-
-void drawIt::slider::setVisibility(bool visible) {
-  _visible = visible;
-
-  if (_autoDraw) this->draw();
-  return;
-}
-
-void drawIt::slider::visible(bool visible) {
-  this->setVisibility(visible);
-  return;
-}
-
-bool drawIt::slider::getVisibility() {
-  return _visible;
-}
-
-bool drawIt::slider::visible() {
-  return this->getVisibility();
-}
-
-void drawIt::slider::autoDraw(bool active) {
-  _autoDraw = active;
-
-  if (_autoDraw) this->draw();
   return;
 }
 

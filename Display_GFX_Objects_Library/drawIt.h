@@ -18,14 +18,12 @@
 */
 
 //#include "TFT_ILI9341.h" //for the ILI9341 optimised libary ONLY FOR AVR PROCESSORS (by Bodmer)
-#include "ILI9341_t3.h"    //For the obtimised ILI9341 library for the teensy (by Paul Stoffregen)
+#include "ILI9341_t3.h"    //For the obtimised ILI9341 library [for the teensy 3.2] (by Paul Stoffregen)
 
 //#include "Adafruit_GFX.h"
 //#include "Adafruit_ILI9341.h" //These both for the original Adafruit GFX library with ILI9341 display
 
 /*
-   Now also include this .h file in the drawIt.cpp file of this library.
-
    Now if you have done all, start write your own code!
 */
 
@@ -55,28 +53,13 @@ const uint16_t  _background    = DRAWIT_WHITE,
 
 class drawIt
 {
-  public:
+  private:
 
-    class slider {
+    class visuals {
       public:
-        slider(_displayObjectType& _display, uint16_t x_origin = 0, uint16_t y_origin = 0, uint16_t x_length = 0, uint16_t y_length = 0, bool autoDrawActivated = false, float value = 0.0, bool touchActivated = true); //
 
         void changeOrigin(uint16_t x_origin, uint16_t y_origin); //
         void changeLength(uint16_t x_length, uint16_t y_length); //
-
-        void setValue(float value); //
-        void value(float value); //
-
-        float getValue(); //
-        float value(); //
-
-        void setTouch(bool activated); //
-        void touch(bool activated); //
-
-        bool getTouch(); //
-        bool touch(); //
-
-        void touched(uint16_t x, uint16_t y);
 
         void setVisibility(bool visible); //
         void visible(bool visible); //
@@ -87,10 +70,7 @@ class drawIt
         void autoDraw(bool active);
         bool autoDraw();
 
-        void draw();
-
-      private:
-        _displayObjectType& _display;
+      protected:
 
         struct _origin {
           uint16_t x, y;
@@ -100,8 +80,49 @@ class drawIt
           uint16_t x, y;
         } _length;
 
+        bool _visible, _autoDraw;
+
+      private:
+
+        virtual void draw();
+    };
+    
+
+    class touch {
+      public:
+      
+        virtual void touched(uint16_t x, uint16_t y); //
+
+        void setTouch(bool activated); //
+
+        bool getTouch(); //
+
+      protected:
+
+        bool _touch;
+    };
+
+    
+  public:
+
+    class slider : public visuals, public touch {
+      public:
+        slider(_displayObjectType& _display, uint16_t x_origin = 0, uint16_t y_origin = 0, uint16_t x_length = 0, uint16_t y_length = 0, bool autoDrawActivated = false, float value = 0.0, bool touchActivated = true); //
+
+        void setValue(float value); //
+        void value(float value); //
+
+        float getValue(); //
+        float value(); //
+
+        void touched(uint16_t x, uint16_t y);
+
+        void draw(); //
+
+      private:
+        _displayObjectType& _display;
+
         float _value;
-        bool _touch, _visible, _autoDraw;
 
         struct _color {
           const uint16_t background = _background, outline = _outline, slider = _slider, slideroutline = _slideroutline;
@@ -109,7 +130,7 @@ class drawIt
     };
 
 
-    class button {
+    class button : public visuals, public touch {
       public:
 
       private:

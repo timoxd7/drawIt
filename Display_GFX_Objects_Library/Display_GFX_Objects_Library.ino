@@ -3,16 +3,6 @@
 
 #include "drawIt.h"
 
-#define DRAWIT_BLACK    0x0000
-#define DRAWIT_BLUE     0x001F
-#define DRAWIT_RED      0xF800
-#define DRAWIT_GREEN    0x07E0
-#define DRAWIT_CYAN     0x07FF
-#define DRAWIT_MAGENTA  0xF81F
-#define DRAWIT_YELLOW   0xFFE0
-#define DRAWIT_WHITE    0xFFFF
-#define DRAWIT_GREY     0x5AEB
-
 #define TFT_DC   15
 #define TFT_CS   10
 #define TFT_MOSI 11
