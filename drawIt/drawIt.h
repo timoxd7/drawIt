@@ -42,7 +42,7 @@
 
 #ifndef _displayObjectType
 #error "You have to spezify an object-type in the drawIt.h or with a '#define _displayObjectType [Type of the display Object]' !"
-#endif
+#endif //_displayObjectType
 
 
 //-----------------------------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ class drawIt
 
       protected:
         struct _color {
-          uint16_t background, outline;
+          uint16_t background = DRAWIT_WHITE, outline = DRAWIT_BLACK;
         } _color;
     };
 
@@ -170,7 +170,7 @@ class drawIt
         float _value;
 
         struct _sliderColor {
-          uint16_t background, outline;
+          uint16_t background = DRAWIT_WHITE, outline = DRAWIT_BLACK;
         } _sliderColor;
     };
 
@@ -183,4 +183,4 @@ class drawIt
     };
 };
 
-#endif
+#endif //drawIt_h

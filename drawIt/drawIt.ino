@@ -1,15 +1,18 @@
-#include "SPI.h"
-#include "ILI9341_t3.h"
+#include <ILI9341_t3.h>
+#include <XPT2046_Touchscreen.h>
 
 #include "drawIt.h"
 
 #define TFT_DC   15
 #define TFT_CS   10
-#define TFT_MOSI 11
-#define TFT_MISO 12
-#define TFT_CLK  13
 #define TFT_RST  4
 #define TFT_LED  19
+//#define TFT_MOSI 11
+//#define TFT_MISO 12
+//#define TFT_CLK  13
+
+#define TOUCH_CS  20
+#define TOUCH_IRQ 21
 
 #define delayx 20
 
@@ -17,7 +20,11 @@
    Using Hardware SPI
 */
 
-ILI9341_t3 display = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_CLK, TFT_MISO);
+ILI9341_t3 display = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST);
+//ILI9341_t3 display = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_CLK, TFT_MISO);
+
+XPT2046_Touchscreen touch(TOUCH_CS, TOUCH_IRQ);
+
 
 const uint16_t origin = 0, x_length = 50, y_length = 310;
 
@@ -43,9 +50,24 @@ void setup() {
     slider[i].changeLength(x_length, y_length);
     slider[i].autoDraw(true);
   }
+
+  touch.begin(display.width(), display.height(), touch.getEEPROMCalibration());
 }
 
 void loop() {
+
+  if(touch.touched()){
+    TS_Point p = touch.getPixel();
+    
+    for (int i = 0; i < 4; i++){
+      slider[i].touched(p.x, p.y);
+    }
+
+    delay(delayx);
+  }
+
+
+/*
   //slider higher
   for(int i = 0; i <= 100; i+=5){
     slider[0].setValue(i/100.0);
@@ -63,6 +85,8 @@ void loop() {
     slider[3].setValue(i/800.0);
     delay(delayx);
   }
+
+*/
   
 /*
   //transition to horizontal

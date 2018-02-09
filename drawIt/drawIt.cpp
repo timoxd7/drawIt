@@ -105,7 +105,7 @@ drawIt::slider::slider(_displayObjectType& _dsp, uint16_t x_origin, uint16_t y_o
   this->changeLength(x_length, y_length);
   this->setValue(value);
   this->setTouch(touchActivated);
-  this->setVisibility(autoDrawActivated);
+  this->setVisibility(true);
 
   return;
 }
@@ -156,21 +156,19 @@ void drawIt::slider::touched(uint16_t x, uint16_t y) {
   //Touch on the slider?
   if ((x > _origin.x + 1) && (y > _origin.y + 1) && (x < (_origin.x + _length.x - 2)) && (y < (_origin.y + _length.y - 2))) { // clear...
     if (_length.x > _length.y) { //Wich direction?
-      if (x < ((_origin.x + 1) + ((_length.y - 2) / 2))) { //Minimum?
-        _value = 0.0;
-      } else if (x > ((_origin.x + _length.x - 1) - ((_length.y - 2) / 2))) { //Maximum?
-        _value = 1.0;
-      } else { //between
-        _value = (x - (_origin.x + 1 + ((_length.y - 2) / 2))) / ((_length.x - 2) - (_length.y - 2)) * 1.0;
-      }
+      //minimum = ((_length.y-2)/2)
+      //maximum = (_length.x-2) - ((_length.y-2)/2)
+      
+      _value = (x - _origin.x - _length.y/2.0) / (_length.x - _length.y) *1.0;
+
+      if (_value > 1) _value = 1.0; else if (_value < 0) _value = 0;
     } else if (_length.y > _length.x) {
-      if (y < ((_origin.y + 1) + ((_length.x - 2) / 2))) { //Now Maximum?
-        _value = 1.0;
-      } else if (y > ((_origin.y + _length.y - 1) - ((_length.x - 2) / 2))) { //Now Minimum?
-        _value = 0.0;
-      } else { //between
-        _value = 1.0 - ((y - (_origin.y + 1 + ((_length.x - 2) / 2))) / ((_length.y - 2) - (_length.x - 2)) * 1.0);
-      }
+      //minimum = (_length.y-2) - ((_length.x-2)/2)
+      //maximum = ((_length.x-2)/2)
+
+      _value = 1.0 - (y - _origin.y - _length.x/2.0) / (_length.y - _length.x) *1.0;
+      
+      if (_value > 1) _value = 1.0; else if (_value < 0) _value = 0;
     } else { //If it isn't a slider but a box
       _value = 0.0;
     }
