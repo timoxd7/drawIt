@@ -41,7 +41,7 @@
 //-----------------------------------------------------------------------------------------------------
 
 #ifndef _displayObjectType
-#error "You have to spezify an object-type in the drawIt.h or with a '#define _displayObjectType [Type of the display Object]' !"
+#error "You have to specify an object-type in the drawIt.h !"
 #endif //_displayObjectType
 
 
@@ -85,13 +85,17 @@ class drawIt
         void changeLength(uint16_t x_length, uint16_t y_length); //
 
         void setVisibility(bool visible); //
-        void visible(bool visible); //
 
-        bool getVisibility(); //
-        bool visible(); //
+        bool getVisibility() {
+          return _visible;
+        }
 
         void autoDraw(bool active);
-        bool autoDraw();
+        bool autoDraw() {
+          return _autoDraw;
+        }
+        
+        virtual void draw();
 
       protected:
 
@@ -104,21 +108,21 @@ class drawIt
         } _length;
 
         bool _visible, _autoDraw;
-
-      private:
-
-        virtual void draw();
     };
-    
+
 
     class touch {
       public:
-      
-        virtual void touched(uint16_t x, uint16_t y); //
 
-        void setTouch(bool activated); //
+        virtual bool touched(uint16_t x, uint16_t y); //
 
-        bool getTouch(); //
+        void setTouch(bool activated){
+          _touch = activated;
+        }
+
+        bool getTouch(){
+          return _touch;
+        }
 
       protected:
 
@@ -130,10 +134,16 @@ class drawIt
       public:
 
         void setBackgroundColor(uint16_t backgroundColor);
-        void backgroundColor(uint16_t backgroundColor);
 
-        uint16_t getBackgroundColor();
-        uint16_t backgroundColor();
+        uint16_t getBackgroundColor() {
+          return _color.background;
+        }
+
+        void setOutlineColor(uint16_t outlineColor);
+
+        uint16_t getOutlineColor() {
+          return _color.outline;
+        }
 
       protected:
         struct _color {
@@ -141,7 +151,7 @@ class drawIt
         } _color;
     };
 
-    
+
   public:
 
     class slider : public visuals, public touch, public color {
@@ -149,22 +159,18 @@ class drawIt
         slider(_displayObjectType& _display, uint16_t x_origin = 0, uint16_t y_origin = 0, uint16_t x_length = 0, uint16_t y_length = 0, bool autoDrawActivated = false, float value = 0.0, bool touchActivated = true); //
 
         void setValue(float value); //
-        void value(float value); //
 
         float getValue(); //
-        float value(); //
 
-        void touched(uint16_t x, uint16_t y);
+        bool touched(uint16_t x, uint16_t y);
 
         void setSliderBackgroundColor(uint16_t sliderBackgroundColor);
-        void sliderBackgroundColor(uint16_t sliderBackgroundColor);
 
         uint16_t getSliderBackgroundColor();
-        uint16_t sliderBackgroundColor();
 
         void draw(); //
 
-      private:
+      protected:
         _displayObjectType& _display;
 
         float _value;
@@ -177,9 +183,13 @@ class drawIt
 
     class button : public visuals, public touch, public color {
       public:
+        button(_displayObjectType& _display, uint16_t x_origin = 0, uint16_t y_origin = 0, uint16_t x_length = 0, uint16_t y_length = 0, bool autoDrawActivated = false, bool touchActivated = true);
 
-      private:
+        bool touched(uint16_t x, uint16_t y);
+        void draw();
 
+      protected:
+        _displayObjectType& _display;
     };
 };
 

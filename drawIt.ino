@@ -1,18 +1,17 @@
-#include <ILI9341_t3.h>
+#include "ILI9341_t3.h"
 #include <XPT2046_Touchscreen.h>
 
 #include "drawIt.h"
 
-#define TFT_DC   15
+#define TFT_DC   6
 #define TFT_CS   10
-#define TFT_RST  4
-#define TFT_LED  19
+#define TFT_RST  7
 //#define TFT_MOSI 11
 //#define TFT_MISO 12
 //#define TFT_CLK  13
 
-#define TOUCH_CS  20
-#define TOUCH_IRQ 21
+#define TOUCH_CS  9
+#define TOUCH_IRQ 2
 
 #define delayx 20
 
@@ -21,98 +20,104 @@
 */
 
 ILI9341_t3 display = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST);
-//ILI9341_t3 display = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_CLK, TFT_MISO);
+//Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_CLK, TFT_MISO);
 
 XPT2046_Touchscreen touch(TOUCH_CS, TOUCH_IRQ);
 
 
-const uint16_t origin = 0, x_length = 50, y_length = 310;
+const uint16_t slider_x_length =  50, slider_y_length = 310,
+               button_x_length = 100, button_y_length = 100;
 
-drawIt::slider slider[4](display);
+drawIt::slider slider[2] = drawIt::slider(display);
+drawIt::button button[2] = drawIt::button(display);
 
 void setup() {
-  pinMode(TFT_LED, OUTPUT);
-  digitalWrite(TFT_LED, HIGH);
-  
   display.begin();
   display.setRotation(0);
   display.fillScreen(DRAWIT_WHITE);
 
   slider[0].changeOrigin(5, 5);
-
   slider[1].changeOrigin(60, 5);
 
-  slider[2].changeOrigin(115, 5);
+  button[0].changeOrigin(115, 5);
+  button[1].changeOrigin(115, 110);
 
-  slider[3].changeOrigin(170, 5);
-
-  for(int i = 0; i < 4; i++) {
-    slider[i].changeLength(x_length, y_length);
+  for (int i = 0; i < 2; i++) {
+    slider[i].changeLength(slider_x_length, slider_y_length);
     slider[i].autoDraw(true);
+
+    button[i].changeLength(button_x_length, button_y_length);
+    button[i].autoDraw(true);
   }
 
+  display.setTextColor(DRAWIT_BLACK);
+
   touch.begin(display.width(), display.height(), touch.getEEPROMCalibration());
+
+  char buf[15];
+  for (int i; i < 2; i++) {
+    snprintf(buf, sizeof(buf), "Slider %i at %i%%", i + 1, (uint8_t)(slider[i].getValue() * 100));
+    display.setCursor(115, 235 + (i * 10));
+    display.print(buf);
+  }
+  
+  display.setCursor(115, 265);
+  display.fillRect(110, 265, 130, 8, DRAWIT_WHITE);
+  display.print("Pressure 0");
 }
 
 void loop() {
+  static bool touched = true;
 
-  if(touch.touched()){
+  if (touch.touched()) {
+    touched = true;
+
     TS_Point p = touch.getPixel();
-    
-    for (int i = 0; i < 4; i++){
-      slider[i].touched(p.x, p.y);
+
+    for (int i = 0; i < 2; i++) {
+      if (slider[i].touched(p.x, p.y)) {
+        display.fillRect(110, 215, 130, 8, DRAWIT_WHITE);
+        display.fillRect(110, 235 + (i * 10), 130, 8, DRAWIT_WHITE);
+
+        char buf[17];
+
+        snprintf(buf, sizeof(buf), "Slider %i touched", i + 1);
+        display.setCursor(115, 215);
+        display.print(buf);
+
+        snprintf(buf, sizeof(buf), "Slider %i at %i%%", i + 1, (uint8_t)(slider[i].getValue() * 100));
+        display.setCursor(115, 235 + (i * 10));
+        display.print(buf);
+      }
     }
 
+    for (int i = 0; i < 2; i++) {
+      if (button[i].touched(p.x, p.y)) {
+        display.fillRect(110, 215, 130, 8, DRAWIT_WHITE);
+
+        char buf[17];
+        snprintf(buf, sizeof(buf), "Button %i touched", i + 1);
+        display.setCursor(115, 215);
+        display.print(buf);
+      }
+    }
+
+    char buf[14];
+    snprintf(buf, sizeof(buf), "Pressure %i", p.z);
+    display.setCursor(115, 265);
+    display.fillRect(110, 265, 130, 8, DRAWIT_WHITE);
+    display.print(buf);
+
     delay(delayx);
+  } else if (touched) {
+    touched = false;
+
+    display.fillRect(110, 215, 130, 8, DRAWIT_WHITE);
+    display.setCursor(115, 215);
+    display.print("Nothing touched");
+    
+    display.fillRect(110, 265, 130, 8, DRAWIT_WHITE);
+    display.setCursor(115, 265);
+    display.print("Pressure 0");
   }
-
-
-/*
-  //slider higher
-  for(int i = 0; i <= 100; i+=5){
-    slider[0].setValue(i/100.0);
-    slider[1].setValue(i/200.0);
-    slider[2].setValue(i/400.0);
-    slider[3].setValue(i/800.0);
-    delay(delayx);
-  }
-
-  //slider lower
-  for(int i = 100; i >= 0; i-=5){
-    slider[0].setValue(i/100.0);
-    slider[1].setValue(i/200.0);
-    slider[2].setValue(i/400.0);
-    slider[3].setValue(i/800.0);
-    delay(delayx);
-  }
-
-*/
-  
-/*
-  //transition to horizontal
-  for(int i = 0; i <= 100; i+=5){
-    display.fillScreen(DRAWIT_WHITE);
-    slider.changeLength(50 + (1.8 * i), 310 - (2.6 * i));
-  }
-
-
-  //slider higher
-  for(int i = 0; i <= 100; i+=5){
-    slider.setValue(i/100.0);
-    delay(delayx);
-  }
-
-  //slider lower
-  for(int i = 100; i >= 0; i-=5){
-    slider.setValue(i/100.0);
-    delay(delayx);
-  }
-
-
-  //transition to vertikal
-  for(int i = 100; i >= 0; i = i-=5){
-    display.fillScreen(DRAWIT_WHITE);
-    slider.changeLength(50 + (1.8 * i), 310 - (2.6 * i));
-  }
-  */
 }
