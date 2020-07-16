@@ -1,16 +1,19 @@
+#include "../src/drawIt.h"
+
+#include "Arduino.h"
+#include "XPT2046_Touchscreen.h"
 #include "ILI9341_t3.h"
-#include <XPT2046_Touchscreen.h>
 
-#include "drawIt.h"
-
-#define TFT_DC   6
+// Modify the following lines to match your hardware
+#define TFT_DC   9
 #define TFT_CS   10
-#define TFT_RST  7
-//#define TFT_MOSI 11
-//#define TFT_MISO 12
-//#define TFT_CLK  13
+#define TFT_RST  6
+#define TFT_MOSI 11
+#define TFT_MISO 12
+#define TFT_CLK  13
 
-#define TOUCH_CS  9
+//And also the Touch-Pins for the XPT2046
+#define TOUCH_CS  8
 #define TOUCH_IRQ 2
 
 #define delayx 20
@@ -19,7 +22,7 @@
    Using Hardware SPI
 */
 
-ILI9341_t3 display = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST);
+ILI9341_t3 display = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_CLK, TFT_MISO);
 //Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_CLK, TFT_MISO);
 
 XPT2046_Touchscreen touch(TOUCH_CS, TOUCH_IRQ);
@@ -55,7 +58,7 @@ void setup() {
   touch.begin(display.width(), display.height(), touch.getEEPROMCalibration());
 
   char buf[15];
-  for (int i; i < 2; i++) {
+  for (int i = 0; i < 2; i++) {
     snprintf(buf, sizeof(buf), "Slider %i at %i%%", i + 1, (uint8_t)(slider[i].getValue() * 100));
     display.setCursor(115, 235 + (i * 10));
     display.print(buf);
