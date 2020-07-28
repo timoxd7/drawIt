@@ -25,7 +25,7 @@ void slider<D>::setValue(float value) {
         _value = value;
     }
 
-    if (this->_autoDraw) this->draw();
+    if (this->_autoDraw) this->drawOnlySlider();
 }
 
 template <class D>
@@ -71,7 +71,7 @@ bool slider<D>::touched(uint16_t x, uint16_t y) {
             _value = 0.0;
         }
 
-        if (this->_autoDraw) this->draw();
+        if (this->_autoDraw) this->drawOnlySlider();
 
         return true;
     } else
@@ -81,9 +81,18 @@ bool slider<D>::touched(uint16_t x, uint16_t y) {
 template <class D>
 void slider<D>::draw() {
     if (this->_visible) {
+        drawOnlySlider();
+
         //Outline/Background
-        _display.fillRect(this->_origin.x, this->_origin.y, this->_length.x, this->_length.y, this->_color.background);
         _display.drawRect(this->_origin.x, this->_origin.y, this->_length.x, this->_length.y, this->_color.outline);
+    }
+}
+
+template <class D>
+void slider<D>::drawOnlySlider() {
+    if (this->_visible) {
+        //Outline/Background
+        _display.fillRect(this->_origin.x + 1, this->_origin.y + 1, this->_length.x - 2, this->_length.y - 2, this->_color.background);
 
         //Slider
         if (this->_length.x > this->_length.y) {  //Horizontal

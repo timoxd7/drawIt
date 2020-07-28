@@ -27,6 +27,8 @@ class slider : public drawIt_intern::visuals, public drawIt_intern::touch, publi
     struct _sliderColor {
         uint16_t background = DRAWIT_WHITE, outline = DRAWIT_BLACK;
     } _sliderColor;
+
+    void drawOnlySlider();
 };
 
 }  // namespace drawIt
