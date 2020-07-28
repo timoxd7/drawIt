@@ -2,6 +2,7 @@
 #include "Arduino.h"
 #include "ILI9341_t3.h"
 #include "XPT2046_Touchscreen.h"
+#include "font_Arial.h"
 
 // Modify the following lines to match your hardware
 #define TFT_DC 9
@@ -37,6 +38,7 @@ drawIt::button<D> button[2] = drawIt::button<D>(display);
 void setup() {
     display.begin();
     display.setRotation(0);
+    display.setFont(Arial_8);
     display.fillScreen(DRAWIT_WHITE);
 
     slider[0].changeOrigin(5, 5);
@@ -79,7 +81,7 @@ void loop() {
 
         for (int i = 0; i < 2; i++) {
             if (slider[i].touched(p.x, p.y)) {
-                display.fillRect(110, 215, 130, 8, DRAWIT_WHITE);
+                display.fillRect(110, 215, 130, 10, DRAWIT_WHITE);
                 display.fillRect(110, 235 + (i * 10), 130, 8, DRAWIT_WHITE);
 
                 char buf[17];
@@ -96,7 +98,7 @@ void loop() {
 
         for (int i = 0; i < 2; i++) {
             if (button[i].touched(p.x, p.y)) {
-                display.fillRect(110, 215, 130, 8, DRAWIT_WHITE);
+                display.fillRect(110, 215, 130, 10, DRAWIT_WHITE);
 
                 char buf[17];
                 snprintf(buf, sizeof(buf), "Button %i touched", i + 1);
