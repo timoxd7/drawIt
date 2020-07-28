@@ -43,7 +43,22 @@
 template <class D>
 class drawIt {
    private:
-    class visuals {
+    class position {
+       public:
+        virtual void changeOrigin(uint16_t x_origin, uint16_t y_origin);  //
+        virtual void changeLength(uint16_t x_length, uint16_t y_length);  //
+
+       protected:
+        struct _origin {
+            uint16_t x, y;
+        } _origin;
+
+        struct _length {
+            uint16_t x, y;
+        } _length;
+    };
+
+    class visuals : public position {
        public:
         void changeOrigin(uint16_t x_origin, uint16_t y_origin);  //
         void changeLength(uint16_t x_length, uint16_t y_length);  //
@@ -59,24 +74,16 @@ class drawIt {
             return _autoDraw;
         }
 
-        virtual void draw();
+        virtual void draw() = 0;
 
        protected:
-        struct _origin {
-            uint16_t x, y;
-        } _origin;
-
-        struct _length {
-            uint16_t x, y;
-        } _length;
-
         bool _visible, _autoDraw;
     };
 
 
     class touch {
        public:
-        virtual bool touched(uint16_t x, uint16_t y);  //
+        virtual bool touched(uint16_t x, uint16_t y) = 0;
 
         void setTouch(bool activated) {
             _touch = activated;
@@ -150,10 +157,38 @@ class drawIt {
        protected:
         D& _display;
     };
+
+    class touchArea : public position, public touch {
+       public:
+        touchArea(uint16_t x_origin = 0, uint16_t y_origin = 0, uint16_t x_length = 0, uint16_t y_length = 0, bool touchActivated = true);
+
+        bool touched(uint16_t x, uint16_t y);
+    };
 };
 
 
 // ------------------------- Implementation -------------------------
+
+
+//-----------------------------------------------------------------------------------------------------
+
+//Position
+
+//-----------------------------------------------------------------------------------------------------
+
+template <class D>
+void drawIt<D>::position::changeOrigin(uint16_t x_origin, uint16_t y_origin) {
+    _origin.x = x_origin, _origin.y = y_origin;
+}
+
+template <class D>
+void drawIt<D>::position::changeLength(uint16_t x_length, uint16_t y_length) {
+    if (x_length >= 4 && y_length >= 4) {
+        _length.x = x_length, _length.y = y_length;
+    } else {
+        _length.x = 4, _length.y = 4;
+    }
+}
 
 
 //-----------------------------------------------------------------------------------------------------
@@ -164,18 +199,14 @@ class drawIt {
 
 template <class D>
 void drawIt<D>::visuals::changeOrigin(uint16_t x_origin, uint16_t y_origin) {
-    _origin.x = x_origin, _origin.y = y_origin;
+    position::changeOrigin(x_origin, y_origin);
 
     if (_autoDraw) this->draw();
 }
 
 template <class D>
 void drawIt<D>::visuals::changeLength(uint16_t x_length, uint16_t y_length) {
-    if (x_length >= 4 && y_length >= 4) {
-        _length.x = x_length, _length.y = y_length;
-    } else {
-        _length.x = 4, _length.y = 4;
-    }
+    position::changeLength(x_length, y_length);
 
     if (_autoDraw) this->draw();
 }
@@ -260,8 +291,8 @@ uint16_t drawIt<D>::slider::getSliderBackgroundColor() {
 template <class D>
 bool drawIt<D>::slider::touched(uint16_t x, uint16_t y) {
     //Touch on the slider?
-    if (this->_visible && (x >= this->_origin.x) && (y >= this->_origin.y) && (x <= (this->_origin.x + this->_length.x)) && (y <= (this->_origin.y + this->_length.y))) {  // clear...
-        if (this->_length.x > this->_length.y) {                                                                                                                           //Wich direction?
+    if (this->_touch && this->_visible && (x >= this->_origin.x) && (y >= this->_origin.y) && (x <= (this->_origin.x + this->_length.x)) && (y <= (this->_origin.y + this->_length.y))) {  // clear...
+        if (this->_length.x > this->_length.y) {                                                                                                                                           //Wich direction?
             //minimum = _length.y/2 = 0
             //maximum = _length.x - _length.y/2 = 1
 
@@ -342,7 +373,7 @@ drawIt<D>::button::button(D& _dsp, uint16_t x_origin, uint16_t y_origin, uint16_
 
 template <class D>
 bool drawIt<D>::button::touched(uint16_t x, uint16_t y) {
-    if (this->_visible && (x >= this->_origin.x) && (y >= this->_origin.y) && (x <= (this->_origin.x + this->_length.x)) && (y <= (this->_origin.y + this->_length.y)))
+    if (this->_touch && this->_visible && (x >= this->_origin.x) && (y >= this->_origin.y) && (x <= (this->_origin.x + this->_length.x)) && (y <= (this->_origin.y + this->_length.y)))
         return true;
     else
         return false;
@@ -356,5 +387,28 @@ void drawIt<D>::button::draw() {
         _display.drawRect(this->_origin.x, this->_origin.y, this->_length.x, this->_length.y, this->_color.outline);
     }
 }
+
+
+//-----------------------------------------------------------------------------------------------------
+
+//Basic Button
+
+//-----------------------------------------------------------------------------------------------------
+
+template <class D>
+drawIt<D>::touchArea::touchArea(uint16_t x_origin, uint16_t y_origin, uint16_t x_length, uint16_t y_length, bool touchActivated) {
+    this->changeOrigin(x_origin, y_origin);
+    this->changeLength(x_length, y_length);
+    this->setTouch(touchActivated);
+}
+
+template <class D>
+bool drawIt<D>::touchArea::touched(uint16_t x, uint16_t y) {
+    if (this->_touch && (x >= this->_origin.x) && (y >= this->_origin.y) && (x <= (this->_origin.x + this->_length.x)) && (y <= (this->_origin.y + this->_length.y)))
+        return true;
+    else
+        return false;
+}
+
 
 #endif  //drawIt_h
