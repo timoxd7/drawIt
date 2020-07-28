@@ -21,6 +21,8 @@
    Using Hardware SPI
 */
 
+typedef ILI9341_t3 D;
+
 ILI9341_t3 display = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_CLK, TFT_MISO);
 //Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_CLK, TFT_MISO);
 
@@ -29,8 +31,8 @@ XPT2046_Touchscreen touch(TOUCH_CS, TOUCH_IRQ);
 const uint16_t slider_x_length = 50, slider_y_length = 310,
                button_x_length = 100, button_y_length = 100;
 
-drawIt::slider slider[2] = drawIt::slider(display);
-drawIt::button button[2] = drawIt::button(display);
+drawIt<D>::slider slider[2] = drawIt<D>::slider(display);
+drawIt<D>::button button[2] = drawIt<D>::button(display);
 
 void setup() {
     display.begin();
