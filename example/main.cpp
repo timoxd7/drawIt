@@ -31,8 +31,8 @@ XPT2046_Touchscreen touch(TOUCH_CS, TOUCH_IRQ);
 const uint16_t slider_x_length = 50, slider_y_length = 310,
                button_x_length = 100, button_y_length = 100;
 
-drawIt<D>::slider slider[2] = drawIt<D>::slider(display);
-drawIt<D>::button button[2] = drawIt<D>::button(display);
+drawIt::slider<D> slider[2] = drawIt::slider<D>(display);
+drawIt::button<D> button[2] = drawIt::button<D>(display);
 
 void setup() {
     display.begin();
