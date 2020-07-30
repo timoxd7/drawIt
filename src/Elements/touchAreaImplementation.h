@@ -11,7 +11,7 @@ touchArea::touchArea(uint16_t x_origin, uint16_t y_origin, uint16_t x_length, ui
 }
 
 bool touchArea::touched(uint16_t x, uint16_t y) {
-    if (this->_touch && (x >= this->_origin.x) && (y >= this->_origin.y) && (x <= (this->_origin.x + this->_length.x)) && (y <= (this->_origin.y + this->_length.y)))
+    if (this->_touch && (x >= this->_origin.x) && (y >= this->_origin.y) && (x < (this->_origin.x + this->_length.x)) && (y < (this->_origin.y + this->_length.y)))
         return true;
     else
         return false;

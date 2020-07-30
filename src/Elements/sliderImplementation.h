@@ -46,7 +46,7 @@ uint16_t slider<D>::getSliderBackgroundColor() {
 template <class D>
 bool slider<D>::touched(uint16_t x, uint16_t y) {
     //Touch on the slider?
-    if (this->_touch && this->_visible && (x >= this->_origin.x) && (y >= this->_origin.y) && (x <= (this->_origin.x + this->_length.x)) && (y <= (this->_origin.y + this->_length.y))) {  // clear...
+    if (this->_touch && this->_visible && (x >= this->_origin.x) && (y >= this->_origin.y) && (x < (this->_origin.x + this->_length.x)) && (y < (this->_origin.y + this->_length.y))) {  // clear...
         if (this->_length.x > this->_length.y) {                                                                                                                                           //Wich direction?
             //minimum = _length.y/2 = 0
             //maximum = _length.x - _length.y/2 = 1

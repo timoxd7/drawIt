@@ -16,7 +16,7 @@ button<D>::button(D& _dsp, uint16_t x_origin, uint16_t y_origin, uint16_t x_leng
 
 template <class D>
 bool button<D>::touched(uint16_t x, uint16_t y) {
-    if (this->_touch && this->_visible && (x >= this->_origin.x) && (y >= this->_origin.y) && (x <= (this->_origin.x + this->_length.x)) && (y <= (this->_origin.y + this->_length.y)))
+    if (this->_touch && this->_visible && (x >= this->_origin.x) && (y >= this->_origin.y) && (x < (this->_origin.x + this->_length.x)) && (y < (this->_origin.y + this->_length.y)))
         return true;
     else
         return false;
