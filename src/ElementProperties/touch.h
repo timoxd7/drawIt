@@ -15,7 +15,7 @@ class touch {
     }
 
    protected:
-    bool _touch;
+    bool _touch = true;
 };
 
 }  // namespace drawIt_intern

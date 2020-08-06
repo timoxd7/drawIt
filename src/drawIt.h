@@ -43,6 +43,7 @@
 #include "Elements/button.h"
 #include "Elements/slider.h"
 #include "Elements/touchArea.h"
+#include "Elements/staticLabel.h"
 
 
 #endif  //drawIt_h

@@ -34,6 +34,7 @@ const uint16_t slider_x_length = 50, slider_y_length = 310,
 
 drawIt::slider<D> slider[2] = drawIt::slider<D>(display);
 drawIt::button<D> button[2] = drawIt::button<D>(display);
+drawIt::staticLabel<D, ILI9341_t3_font_t, 32> label[2] = drawIt::staticLabel<D, ILI9341_t3_font_t, 32>(display);
 
 void setup() {
     display.begin();
@@ -46,6 +47,13 @@ void setup() {
 
     button[0].changeOrigin(115, 5);
     button[1].changeOrigin(115, 110);
+
+    label[0].changeOrigin(115, 300);
+    label[1].changeOrigin(115, 310);
+    label[0].setLabel("Test1");
+    label[0].autoDraw(true);
+    label[1].setLabel("Test2");
+    label[1].autoDraw(true);
 
     for (int i = 0; i < 2; i++) {
         slider[i].changeLength(slider_x_length, slider_y_length);

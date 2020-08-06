@@ -5,12 +5,10 @@
 namespace drawIt {
 
 template <class D>
-button<D>::button(D& _dsp, uint16_t x_origin, uint16_t y_origin, uint16_t x_length, uint16_t y_length, bool autoDrawActivated, bool touchActivated)
+button<D>::button(D& _dsp, uint16_t x_origin, uint16_t y_origin, uint16_t x_length, uint16_t y_length)
     : _display(_dsp) {
-    this->autoDraw(autoDrawActivated);
     this->changeOrigin(x_origin, y_origin);
     this->changeLength(x_length, y_length);
-    this->setTouch(touchActivated);
     this->setVisibility(true);
 }
 
