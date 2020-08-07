@@ -9,6 +9,7 @@ class button : public drawIt_intern::visuals, public drawIt_intern::touch, publi
 
     bool touched(uint16_t x, uint16_t y);
     void draw();
+    void undraw();
 
    protected:
     D& _display;

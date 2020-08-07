@@ -89,9 +89,14 @@ void slider<D>::draw() {
 }
 
 template <class D>
+void slider<D>::undraw() {
+    _display.fillRect(this->_origin.x, this->_origin.y, this->_length.x, this->_length.y, this->_color.background);
+}
+
+template <class D>
 void slider<D>::drawOnlySlider() {
     if (this->_visible) {
-        //Outline/Background
+        //Background
         _display.fillRect(this->_origin.x + 1, this->_origin.y + 1, this->_length.x - 2, this->_length.y - 2, this->_color.background);
 
         //Slider

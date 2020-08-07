@@ -18,6 +18,7 @@ class slider : public drawIt_intern::visuals, public drawIt_intern::touch, publi
     uint16_t getSliderBackgroundColor();
 
     void draw();  //
+    void undraw();
 
    protected:
     D& _display;

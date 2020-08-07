@@ -19,7 +19,12 @@ void visuals::changeLength(uint16_t x_length, uint16_t y_length) {
 void visuals::setVisibility(bool visible) {
     _visible = visible;
 
-    if (_autoDraw) this->draw();
+    if (_autoDraw) {
+        if (visible)
+            this->draw();
+        else
+            this->undraw();
+    }
 }
 
 void visuals::autoDraw(bool active) {

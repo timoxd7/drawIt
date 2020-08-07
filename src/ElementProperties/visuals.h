@@ -21,6 +21,7 @@ class visuals : public position {
     }
 
     virtual void draw() = 0;
+    virtual void undraw() = 0;
 
    protected:
     bool _visible, _autoDraw;

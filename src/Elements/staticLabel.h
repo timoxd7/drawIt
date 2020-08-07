@@ -30,13 +30,7 @@ class staticLabel : public drawIt_intern::visuals, public drawIt_intern::color {
     }
 
     void draw() {
-        size_t labelLength = strlen(_label);
-
-        if (_autoSize.active) {
-            this->changeLength(_autoSize.width * labelLength, _autoSize.height);
-        }
-
-        _display.fillRect(this->_origin.x, this->_origin.y, this->_length.x, this->_length.y, this->_color.background);
+        undraw();
 
         _display.setCursor(this->_origin.x, this->_origin.y);
         
@@ -49,6 +43,15 @@ class staticLabel : public drawIt_intern::visuals, public drawIt_intern::color {
         _display.setTextColor(this->_color.outline);
 
         _display.print(_label);
+    }
+
+    void undraw() {
+        if (_autoSize.active) {
+            size_t labelLength = strlen(_label);
+            this->changeLength(_autoSize.width * labelLength, _autoSize.height);
+        }
+
+        _display.fillRect(this->_origin.x, this->_origin.y, this->_length.x, this->_length.y, this->_color.background);
     }
 
     /**

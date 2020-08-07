@@ -24,9 +24,14 @@ template <class D>
 void button<D>::draw() {
     if (this->_visible) {
         //Outline/Background (all of the button)
-        _display.fillRect(this->_origin.x, this->_origin.y, this->_length.x, this->_length.y, this->_color.background);
+        undraw();
         _display.drawRect(this->_origin.x, this->_origin.y, this->_length.x, this->_length.y, this->_color.outline);
     }
+}
+
+template <class D>
+void button<D>::undraw() {
+    _display.fillRect(this->_origin.x, this->_origin.y, this->_length.x, this->_length.y, this->_color.background);
 }
 
 }  // namespace drawIt
